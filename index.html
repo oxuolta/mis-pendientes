@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+  <meta charset="utf-8">
+  <title>Mis Pendientes</title>
+  <meta name="referrer" content="no-referrer">
+  <base target="_top">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Mis Pendientes">
+  <meta name="theme-color" content="#ffffff">
+  <style>
+    :root{--ink:#18233e;--muted:#748198;--line:#dce7f1;--pink:#ff2f9a;--cyan:#13a8ec;--green:#38d52f;--red:#ed4c5c;--safeTop:env(safe-area-inset-top,0px);--safeBottom:env(safe-area-inset-bottom,0px);--shadow:0 10px 28px rgba(24,66,105,.08)}
+    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{margin:0;height:100%;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;background:linear-gradient(180deg,#fff,#f4f9ff);color:var(--ink);overflow:hidden}button,textarea{font:inherit}button{border:0;cursor:pointer}
+    .viewport{width:100vw;height:100vh;overflow:hidden;touch-action:pan-y}.track{height:100%;display:flex;width:500%;transition:transform .34s cubic-bezier(.22,.61,.36,1);will-change:transform}.page{width:20%;height:100%;flex:none;overflow-y:auto;padding:calc(12px + var(--safeTop)) 14px calc(28px + var(--safeBottom))}
+    .header{text-align:center;padding:10px 0 18px}.title{font-size:38px;font-weight:950;margin-bottom:12px}.date{font-size:42px;font-weight:950;color:var(--pink)}.time{font-size:38px;font-weight:900;color:var(--cyan);margin-top:6px}
+    .home{min-height:calc(100vh - var(--safeTop) - var(--safeBottom) - 40px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px}.home .header{padding:0 0 12px}
+    .capture{width:min(92vw,720px);min-height:280px;border:3px solid #d6dce5;border-radius:28px;padding:22px;font-size:34px;line-height:1.35;resize:none;background:#fff;color:var(--ink);outline:none;box-shadow:var(--shadow)}.capture:focus{border-color:#67baff;box-shadow:0 0 0 6px #e7f4ff}.save{width:min(65vw,430px);min-height:90px;border-radius:25px;background:linear-gradient(135deg,#49e135,#24c62f);color:#0b3810;font-size:38px;font-weight:950;box-shadow:0 13px 28px rgba(36,174,48,.2)}
+    .hint{font-size:19px;color:#8b97aa;font-weight:700}.list{display:grid;gap:16px;max-width:920px;margin:0 auto;padding-bottom:30px}.empty{background:#fff;border:2px dashed #c9d9e8;border-radius:26px;padding:44px 20px;text-align:center;color:var(--muted);font-size:25px;font-weight:750}
+    .card{--accent:#168df2;position:relative;background:#fff;border:2px solid var(--line);border-left:11px solid var(--accent);border-radius:26px;overflow:hidden;box-shadow:var(--shadow);touch-action:pan-y}.inner{padding:20px 24px;transition:.2s}.stamp{display:flex;justify-content:center;gap:34px;font-size:19px;font-weight:900;margin-bottom:13px}.stamp .d{color:#1eb76e}.stamp .t{color:var(--pink)}.txt{font-size:28px;line-height:1.3;font-weight:760;padding-right:22px;word-break:break-word}.check{position:absolute;right:18px;top:50%;transform:translateY(-50%);color:#24b65b;font-size:30px}.deleteBg{position:absolute;right:0;top:0;bottom:0;width:150px;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:950;transform:translateX(100%);transition:.2s}.card.swiped .deleteBg{transform:translateX(0)}.card.swiped .inner{transform:translateX(-150px)}
+    .dots{position:fixed;bottom:calc(10px + var(--safeBottom));left:50%;transform:translateX(-50%);display:flex;gap:9px;z-index:10}.dot{width:11px;height:11px;border-radius:50%;background:#c6d4e3}.dot.active{background:#168df2;transform:scale(1.25)}
+    dialog{border:0;border-radius:28px;padding:0;width:min(92vw,580px);box-shadow:0 24px 70px rgba(0,0,0,.3)}dialog::backdrop{background:#0007}.sheet{padding:22px}.sheetText{background:#f5f9fc;border-radius:19px;padding:18px;font-size:28px;line-height:1.35;font-weight:800}.actions{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:16px}.actions button{min-height:68px;border-radius:18px;font-size:22px;font-weight:900}.complete{background:#eafaf0;color:#0b8c36}.edit{background:#edf6ff;color:#0b78da}.close{grid-column:1/-1;background:#f0f3f7;color:#5a697d}
+    @media(min-width:900px){.page{padding-left:32px;padding-right:32px}.title{font-size:48px}.date{font-size:50px}.time{font-size:44px}.capture{min-height:340px;font-size:40px}.save{font-size:44px;min-height:100px}.list{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.txt{font-size:31px}.stamp{font-size:21px}}
+    @media(max-width:600px){.page{padding-left:10px;padding-right:10px}.title{font-size:29px}.date{font-size:31px}.time{font-size:28px}.home{gap:16px}.capture{width:90vw;min-height:220px;padding:17px;font-size:23px;border-radius:21px}.save{width:60vw;min-height:68px;font-size:29px;border-radius:19px}.hint{font-size:14px}.inner{padding:15px 17px}.stamp{font-size:14px;gap:22px}.txt{font-size:20px}.card{border-radius:20px}.deleteBg{width:115px;font-size:18px}.card.swiped .inner{transform:translateX(-115px)}.empty{font-size:19px;padding:31px 14px}.sheetText{font-size:21px}.actions button{font-size:18px}}
+
+    .voiceBox{width:min(90vw,720px);text-align:center}.voiceActions{display:flex;justify-content:center;align-items:center;gap:10px}.mic{width:58px;height:58px;padding:0;border-radius:50%;background:#e7f4ff;color:#0867ab;font-size:30px;font-weight:800;display:inline-flex;align-items:center;justify-content:center}.mic[aria-pressed="true"]{background:#fff0f3;color:#b51f43}.modifyDraft{min-height:40px;padding:8px 14px;border-radius:13px;background:#f0f3f7;color:#53627b;font-size:14px;font-weight:850}.voiceStatus,.voicePreview{font-size:16px;line-height:1.4;margin:9px 0 0;color:#53627b}.voicePreview{color:#0867ab;white-space:pre-wrap}.voicePreview:empty{display:none}button:disabled{opacity:.55;cursor:default}button:focus-visible{outline:3px solid #168df2;outline-offset:3px}.connection{position:fixed;top:calc(8px + var(--safeTop));right:10px;z-index:12;padding:9px 13px;border-radius:14px;background:#edf6ff;color:#0867ab;font-size:14px}.appStatus{position:fixed;bottom:calc(29px + var(--safeBottom));left:5%;width:90%;text-align:center;font-size:13px;background:#fffef0;z-index:11;border-radius:8px}.appStatus:empty{display:none}.config label{display:block;font-weight:700;margin:15px 0 6px}.config input{width:100%;font:inherit;padding:12px;border:1px solid #becbdc;border-radius:10px}.config p{line-height:1.5;color:#53627b}.config h2{margin-top:0}.home{padding-top:30px;padding-bottom:35px}.dots .dot{padding:0;border:0}.dots{gap:16px;padding:5px}
+  </style>
+</head>
+<body>
+<div id="viewport" class="viewport"><div id="track" class="track">
+  <section class="page"><div class="home"><div class="header"><div id="homeDate" class="date"></div><div id="homeTime" class="time"></div></div><textarea id="taskText" class="capture" aria-label="Texto del recordatorio" placeholder="Escribe o dicta tu recordatorio..."></textarea><div class="voiceBox"><div class="voiceActions"><button id="micBtn" class="mic" type="button" aria-label="Dictar recordatorio" title="Dictar" aria-pressed="false" aria-controls="taskText" onclick="alternarDictado()">🎙</button><button id="modifyDraftBtn" class="modifyDraft" type="button" onclick="modificarBorrador()">MODIFICAR</button></div><p id="voiceStatus" class="voiceStatus" role="status">Toca el micrófono, habla y revisa el texto antes de guardar.</p><p id="voicePreview" class="voicePreview"></p></div><button id="saveBtn" class="save" onclick="guardarRapido()">GUARDAR</button><div class="hint">Desliza para ver pendientes y completados</div></div></section>
+  <section class="page"><div class="header"><div class="title">PENDIENTES</div><div id="pendingDate" class="date"></div><div id="pendingTime" class="time"></div></div><div id="pendingList" class="list"><div class="empty">Cargando...</div></div></section>
+  <section class="page"><div class="header"><div class="title">COMPLETADOS</div><div id="doneDate" class="date"></div><div id="doneTime" class="time"></div></div><div id="doneList" class="list"><div class="empty">Cargando...</div></div></section>
+</div></div>
+<button class="connection" onclick="abrirConexion()">Conexión</button>
+<div id="appStatus" class="appStatus" role="status"></div>
+<div class="dots" aria-label="Páginas"><button class="dot active" aria-label="Nuevo recordatorio" onclick="setPage(0)"></button><button class="dot" aria-label="Pendientes" onclick="setPage(1)"></button><button class="dot" aria-label="Completados" onclick="setPage(2)"></button></div>
+<dialog id="configDlg"><form id="configForm" class="sheet config">
+<h2>Conectar mis pendientes</h2><p>Introduce la URL de tu aplicación web de Apps Script (terminada en /exec) y tu clave ACCESS_KEY. La clave se conserva solo durante esta sesión.</p>
+<label for="backendUrl">URL de la aplicación web</label><input id="backendUrl" type="url" required placeholder="https://script.google.com/macros/s/…/exec" autocomplete="off">
+<label for="accessKey">Clave de acceso</label><input id="accessKey" type="password" required autocomplete="off">
+<p id="configStatus" role="status"></p><div class="actions"><button id="connectBtn" class="complete" type="submit">CONECTAR</button><button class="edit" type="button" onclick="configDlg.close()">CERRAR</button></div>
+</form></dialog>
+<dialog id="taskDlg"><div class="sheet"><div id="sheetText" class="sheetText"></div><div class="actions"><button id="completeBtn" class="complete">✓ COMPLETAR</button><button id="editBtn" class="edit">EDITAR</button><button id="deleteBtn" class="deleteBtn">ELIMINAR</button><button class="close" onclick="taskDlg.close()">CERRAR</button></div></div></dialog>
+<script>
+let DATA=[],PAGE=0,POS=1,CURRENT=null,EDITING=null,ANIMATING=false;const COLORS=['#168df2','#ff8a00','#8d4ce8','#21b96b','#ff4f71','#00a9d6','#f1b900'];const track=document.getElementById('track');
+const $=id=>document.getElementById(id);
+const taskText=$('taskText'),saveBtn=$('saveBtn'),micBtn=$('micBtn'),modifyDraftBtn=$('modifyDraftBtn'),voiceStatus=$('voiceStatus'),voicePreview=$('voicePreview');
+const configDlg=$('configDlg'),taskDlg=$('taskDlg'),sheetText=$('sheetText'),completeBtn=$('completeBtn'),editBtn=$('editBtn'),deleteBtn=$('deleteBtn');
+let CONNECTION={url:'',key:''},CONNECTED=false,SAVING=false,LOADING=false,MUTATING=false,DRAFT_ID='',LOAD_VERSION=0;
+try{CONNECTION.url=localStorage.getItem('PENDIENTES_BACKEND_URL')||'';CONNECTION.key=sessionStorage.getItem('PENDIENTES_ACCESS_KEY')||''}catch(e){}
+function avisar(text){$('appStatus').textContent=text}
+function endpoint(value){const u=new URL(value);if(u.origin!=='https://script.google.com'||!/^\/macros\/s\/[A-Za-z0-9_-]+\/exec$/.test(u.pathname)||u.username||u.password)throw new Error('Usa la URL de Apps Script terminada en /exec.');return u.origin+u.pathname}
+let requestNumber=0;
+function api(action,params={},connection=CONNECTION){
+  return new Promise((resolve,reject)=>{
+    if(!connection.url||!connection.key){reject(new Error('Abre Conexión e introduce tu URL y clave.'));return}
+    let u;try{u=new URL(endpoint(connection.url))}catch(e){reject(e);return}
+    const cb='pendientes_'+Date.now()+'_'+(++requestNumber),script=document.createElement('script');
+    let settled=false;
+    const finish=(err,data)=>{if(settled)return;settled=true;clearTimeout(timer);script.remove();window[cb]=()=>{};setTimeout(()=>{delete window[cb]},60000);err?reject(err):resolve(data)};
+    const timer=setTimeout(()=>finish(new Error('No llegó la respuesta. Revisa tu conexión y actualiza la lista antes de repetir la acción.')),25000);
+    window[cb]=data=>{
+      if(!data||!data.ok){const errors={UNAUTHORIZED:'Clave de acceso incorrecta.',BACKEND_NOT_CONFIGURED:'Configura ACCESS_KEY en las propiedades de Apps Script.'};finish(new Error(errors[data&&data.error]||(data&&data.error)||'Respuesta no válida.'));return}
+      finish(null,data);
+    };
+    Object.entries({...params,action,key:connection.key,callback:cb}).forEach(([k,v])=>u.searchParams.set(k,String(v)));
+    script.referrerPolicy='no-referrer';script.src=u.href;script.onerror=()=>finish(new Error('No se pudo conectar. Revisa la URL y el acceso a tu aplicación web.'));document.head.appendChild(script);
+  });
+}
+function abrirConexion(){if(SAVING||MUTATING)return;detenerDictado();$('backendUrl').value=CONNECTION.url;$('accessKey').value=CONNECTION.key;$('configStatus').textContent='';configDlg.showModal()}
+$('configForm').addEventListener('submit',async e=>{
+  e.preventDefault();const b=$('connectBtn');if(b.disabled)return;b.disabled=true;$('configStatus').textContent='Conectando…';
+  try{const next={url:endpoint($('backendUrl').value.trim()),key:$('accessKey').value};await api('check',{},next);if(CONNECTION.url!==next.url||CONNECTION.key!==next.key){EDITING=null;DRAFT_ID=''}CONNECTION=next;CONNECTED=true;LOAD_VERSION++;DATA=[];render();try{localStorage.setItem('PENDIENTES_BACKEND_URL',next.url);sessionStorage.setItem('PENDIENTES_ACCESS_KEY',next.key)}catch(e){}configDlg.close();await cargar()}
+  catch(err){$('configStatus').textContent=err.message}finally{b.disabled=false}
+});
+
+// Final transcripts are committed to the draft; interim text is preview only.
+const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+function dictadoDelTeclado(){
+  const platform=(navigator.userAgentData&&navigator.userAgentData.platform)||navigator.platform||'';
+  if(/win/i.test(platform))return 'Haz clic en el texto y pulsa Windows + H para dictar con Windows.';
+  return 'Toca el texto y usa el micrófono del teclado de tu teléfono, si está disponible.';
+}
+function dentroDeMarco(){return window.self!==window.top}
+function bloqueoDeVoz(){
+  if(!window.isSecureContext)return 'insecure';
+  const policy=document.permissionsPolicy||document.featurePolicy;
+  try{if(policy&&typeof policy.allowsFeature==='function'&&!policy.allowsFeature('microphone'))return 'policy'}catch(e){}
+  return SpeechRecognition?'':'unsupported';
+}
+function explicarBloqueo(){
+  const reason=bloqueoDeVoz();
+  if(reason==='policy')return 'La página que contiene esta app bloquea el micrófono. El permiso de Chrome no elimina ese bloqueo. '+dictadoDelTeclado();
+  if(reason==='insecure')return 'El dictado necesita una página segura (HTTPS o localhost). '+dictadoDelTeclado();
+  return 'Este navegador no ofrece dictado integrado. '+dictadoDelTeclado();
+}
+function explicarAccesoRechazado(){
+  if(bloqueoDeVoz())return explicarBloqueo();
+  if(dentroDeMarco())return 'El dictado fue rechazado dentro de esta página. Prueba el archivo HTML descargado directamente en Chrome para comprobar si lo impide la página que contiene la app. '+dictadoDelTeclado();
+  return 'El navegador o el sistema rechazó el dictado. Comprueba que Windows permita a Chrome usar el micrófono. '+dictadoDelTeclado();
+}
+let recognition=null,VOICE_ACTIVE=false,VOICE_STOPPING=false,VOICE_TIMER=null;
+function controlesVoz(active){VOICE_ACTIVE=active;taskText.readOnly=active||SAVING;saveBtn.disabled=active||SAVING;micBtn.disabled=SAVING;modifyDraftBtn.disabled=active||SAVING;micBtn.setAttribute('aria-pressed',String(active));micBtn.textContent=active?'■':'🎙';micBtn.setAttribute('aria-label',active?'Detener dictado':'Dictar recordatorio');micBtn.title=active?'Detener dictado':'Dictar'}
+function alternarDictado(){
+  if(SAVING)return;if(VOICE_ACTIVE){detenerDictado();return}
+  if(bloqueoDeVoz()){voiceStatus.textContent=explicarBloqueo();taskText.focus();return}
+  let r;try{r=new SpeechRecognition()}catch(e){voiceStatus.textContent='No se pudo iniciar el dictado. Usa el micrófono del teclado.';return}
+  recognition=r;VOICE_STOPPING=false;const base=taskText.value;let hadError=false,finalText='';
+  r.lang='es-MX';r.continuous=false;r.interimResults=true;r.maxAlternatives=1;
+  controlesVoz(true);voiceStatus.textContent='Activando micrófono…';voicePreview.textContent='';
+  const finish=()=>{if(recognition!==r)return;clearTimeout(VOICE_TIMER);recognition=null;VOICE_STOPPING=false;voicePreview.textContent='';controlesVoz(false);if(!hadError)voiceStatus.textContent=finalText?'Dictado listo. Revisa el texto y toca GUARDAR.':'No se detectó voz. Toca el micrófono para intentarlo otra vez.'};
+  r.onstart=()=>{if(recognition===r&&!VOICE_STOPPING)voiceStatus.textContent='Escuchando… Habla en español y toca DETENER al terminar.'};
+  r.onresult=e=>{
+    if(recognition!==r)return;let interim='';finalText='';
+    for(let i=0;i<e.results.length;i++){const t=e.results[i][0].transcript.trim();if(e.results[i].isFinal)finalText+=(finalText?' ':'')+t;else interim+=(interim?' ':'')+t}
+    taskText.value=base+(base&&finalText&&!/\s$/.test(base)?' ':'')+finalText;voicePreview.textContent=interim;
+  };
+  r.onerror=e=>{if(recognition!==r)return;hadError=true;const messages={'not-allowed':explicarAccesoRechazado(),'service-not-allowed':'Este navegador no permite el dictado. Usa el micrófono del teclado.','audio-capture':'No se detectó un micrófono disponible.','network':'El dictado necesita conexión. Revisa internet e inténtalo de nuevo.','no-speech':'No se detectó voz. Toca el micrófono para intentarlo otra vez.','aborted':'Dictado detenido. Puedes revisar el texto.'};voiceStatus.textContent=messages[e.error]||'No se pudo dictar. Puedes escribir o usar el micrófono del teclado.';try{r.abort()}catch(err){}finish()};
+  r.onend=finish;
+  try{r.start()}catch(e){hadError=true;voiceStatus.textContent='No se pudo iniciar el micrófono. Usa el dictado del teclado.';finish()}
+}
+function detenerDictado(){if(!recognition||VOICE_STOPPING)return;VOICE_STOPPING=true;voiceStatus.textContent='Terminando dictado…';micBtn.disabled=true;const r=recognition;try{r.stop()}catch(e){r.onend()}VOICE_TIMER=setTimeout(()=>{if(recognition===r){try{r.abort()}catch(e){}r.onend()}},4000)}
+if(bloqueoDeVoz()){micBtn.textContent='🎙';micBtn.setAttribute('aria-label','Usar dictado del teclado');micBtn.title='Dictado';voiceStatus.textContent=explicarBloqueo()}
+document.addEventListener('visibilitychange',()=>{if(document.hidden)detenerDictado()});
+window.addEventListener('pagehide',detenerDictado);
+function pad(n){return String(n).padStart(2,'0')}function fmtDate(d){return `${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()}`}function fmtTime(d){let h=d.getHours(),m=pad(d.getMinutes()),ap=h>=12?'p. m.':'a. m.';h=h%12||12;return `${h}:${m} ${ap}`}
+function reloj(){const n=new Date(),ds=fmtDate(n),ts=fmtTime(n);[['homeDate','homeTime'],['pendingDate','pendingTime'],['doneDate','doneTime']].forEach(x=>{document.getElementById(x[0]).textContent=ds;document.getElementById(x[1]).textContent=ts})}
+function prepararCarruselCircular(){
+  const reales=[...track.querySelectorAll(':scope > .page')];
+  const cloneLast=reales[2].cloneNode(true);
+  const cloneFirst=reales[0].cloneNode(true);
+  limpiarClon(cloneLast); limpiarClon(cloneFirst);
+  cloneLast.setAttribute('aria-hidden','true'); cloneFirst.setAttribute('aria-hidden','true');
+  track.insertBefore(cloneLast,reales[0]);
+  track.appendChild(cloneFirst);
+  POS=1;
+  track.style.transition='none';
+  track.style.transform='translateX(-20%)';
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{track.style.transition='transform .34s cubic-bezier(.22,.61,.36,1)';}));
+}
+function limpiarClon(node){
+  if(node.id) node.removeAttribute('id');
+  node.querySelectorAll('[role="status"]').forEach(e=>e.removeAttribute('role'));
+  node.inert=true;
+  node.querySelectorAll('[id]').forEach(e=>e.removeAttribute('id'));
+  node.querySelectorAll('[onclick]').forEach(e=>e.removeAttribute('onclick'));
+  node.querySelectorAll('textarea,button').forEach(e=>{e.disabled=true;e.tabIndex=-1;});
+}
+function actualizarDots(){document.querySelectorAll('.dot').forEach((d,k)=>d.classList.toggle('active',k===PAGE));}
+function moverA(logical,dir){
+  if(ANIMATING||SAVING||MUTATING)return;
+  if(((logical%3)+3)%3===PAGE)return;
+  detenerDictado();
+  ANIMATING=true;
+  const from=PAGE;
+  PAGE=((logical%3)+3)%3;
+  let targetPos=PAGE+1;
+  if(from===2 && PAGE===0 && dir>0) targetPos=4;
+  if(from===0 && PAGE===2 && dir<0) targetPos=0;
+  POS=targetPos;
+  track.style.transition='transform .34s cubic-bezier(.22,.61,.36,1)';
+  track.style.transform=`translateX(-${POS*20}%)`;
+  actualizarDots();
+  if(PAGE!==0)cargar();
+}
+function setPage(i){
+  const target=((i%3)+3)%3;
+  const delta=i-PAGE;
+  moverA(target,delta>=0?1:-1);
+}
+track.addEventListener('transitionend',e=>{
+  if(e.target!==track || e.propertyName!=='transform')return;
+  if(POS===4){
+    track.style.transition='none'; POS=1; track.style.transform='translateX(-20%)';
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{track.style.transition='transform .34s cubic-bezier(.22,.61,.36,1)';ANIMATING=false;}));
+  }else if(POS===0){
+    track.style.transition='none'; POS=3; track.style.transform='translateX(-60%)';
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{track.style.transition='transform .34s cubic-bezier(.22,.61,.36,1)';ANIMATING=false;}));
+  }else{
+    ANIMATING=false;
+  }
+});
+async function cargar(){
+  if(!CONNECTED){avisar('Abre Conexión para cargar y guardar tus pendientes.');render();return}
+  if(MUTATING||SAVING)return;LOADING=true;const version=++LOAD_VERSION;avisar('Actualizando…');
+  try{const d=await api('list');if(version!==LOAD_VERSION)return;if(!Array.isArray(d.items))throw new Error('La lista recibida no es válida.');DATA=d.items;render();avisar('')}
+  catch(e){if(version===LOAD_VERSION)avisar(e.message)}finally{LOADING=false}
+}
+function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+function stamp(x){const s=x.fechaAlta||'';if(!s)return{d:'',t:''};const p=s.split(' ');return{d:(p[0]||'').split('-').reverse().join('/'),t:p[1]||''}}
+function render(){lista('pendingList',DATA.filter(x=>x.estado!=='Completado'),false);lista('doneList',DATA.filter(x=>x.estado==='Completado'),true)}
+function lista(id,rows,done){const el=$(id);if(!rows.length){el.innerHTML=`<div class="empty">${CONNECTED?(done?'No hay recordatorios completados.':'No tienes recordatorios pendientes.'):'Conecta tu cuenta para ver los recordatorios.'}</div>`;return}rows.sort((a,b)=>String(b.fechaAlta||'').localeCompare(String(a.fechaAlta||'')));el.innerHTML=rows.map((x,i)=>{const s=stamp(x),c=COLORS[i%COLORS.length];return `<div class="card" style="--accent:${c}" data-id="${esc(x.id)}"><button class="deleteBg" data-action="delete">ELIMINAR</button><div class="inner" role="button" tabindex="0" data-action="detail"><div class="stamp"><span class="d">${esc(s.d)}</span><span class="t">${esc(s.t)}</span></div><div class="txt">${esc(x.asunto||'')}</div>${done?'<div class="check">✓</div>':''}</div></div>`}).join('');el.querySelectorAll('[data-action]').forEach(node=>{const run=ev=>{const id=node.closest('.card').dataset.id;node.dataset.action==='delete'?eliminarDesdeTarjeta(ev,id):detalle(id)};node.addEventListener('click',run);if(node.dataset.action==='detail')node.addEventListener('keydown',ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();run(ev)}})});swipeTarjetas(el)}
+function swipeTarjetas(el){el.querySelectorAll('.card').forEach(card=>{let sx=0,dx=0,on=false;card.addEventListener('pointerdown',e=>{sx=e.clientX;dx=0;on=true});card.addEventListener('pointermove',e=>{if(on)dx=e.clientX-sx});card.addEventListener('pointerup',()=>{if(!on)return;on=false;if(dx<-55)card.classList.add('swiped');else if(dx>30)card.classList.remove('swiped')})})}
+function modificarBorrador(){
+  if(SAVING||VOICE_ACTIVE)return;
+  taskText.value='';
+  EDITING=null;
+  DRAFT_ID='';
+  voicePreview.textContent='';
+  voiceStatus.textContent='Mensaje borrado. Escribe o dicta nuevamente tu recordatorio.';
+  taskText.focus();
+}
+async function guardarRapido(){
+  if(VOICE_ACTIVE||SAVING)return;const txt=taskText.value.trim();if(!txt){taskText.focus();return}if(!CONNECTED){abrirConexion();return}
+  if(!DRAFT_ID)DRAFT_ID=EDITING?EDITING.id:(window.crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+'-'+Math.random().toString(36).slice(2));
+  SAVING=true;LOAD_VERSION++;controlesVoz(false);saveBtn.textContent='GUARDANDO…';
+  let saved=false;
+  try{await api('save',{id:DRAFT_ID,text:txt});taskText.value='';EDITING=null;DRAFT_ID='';voiceStatus.textContent='Guardado. Puedes escribir o dictar otro recordatorio.';saved=true}
+  catch(e){avisar('No se pudo confirmar el guardado: '+e.message)}
+  finally{SAVING=false;saveBtn.textContent='GUARDAR';controlesVoz(false)}
+  if(saved){setPage(1);cargar()}
+}
+function detalle(id){CURRENT=DATA.find(x=>x.id===id);if(!CURRENT)return;sheetText.textContent=CURRENT.asunto||'';const done=CURRENT.estado==='Completado';completeBtn.style.display=done?'none':'block';editBtn.style.display=done?'none':'block';deleteBtn.style.display=done?'block':'none';completeBtn.onclick=completar;editBtn.onclick=editar;deleteBtn.onclick=eliminarActual;taskDlg.showModal()}
+async function cambiar(action,id){if(MUTATING)return false;MUTATING=true;LOAD_VERSION++;[completeBtn,editBtn,deleteBtn].forEach(b=>b.disabled=true);try{await api(action,{id});taskDlg.close();return true}catch(e){avisar(e.message);return false}finally{MUTATING=false;[completeBtn,editBtn,deleteBtn].forEach(b=>b.disabled=false)}}
+async function completar(){if(!CURRENT)return;if(await cambiar('complete',CURRENT.id)){setPage(2);cargar()}}
+function editar(){if(!CURRENT||VOICE_ACTIVE)return;EDITING=CURRENT;DRAFT_ID=CURRENT.id;taskText.value=CURRENT.asunto||'';taskDlg.close();setPage(0);setTimeout(()=>taskText.focus(),400)}
+async function eliminarActual(){if(!CURRENT)return;if(!confirm('¿Eliminar este recordatorio? Se guardará una copia en ELIMINADOS.'))return;if(await cambiar('delete',CURRENT.id))cargar()}
+async function eliminarDesdeTarjeta(ev,id){ev.stopPropagation();if(MUTATING)return;if(!confirm('¿Eliminar este recordatorio? Se guardará una copia en ELIMINADOS.'))return;if(await cambiar('delete',id))cargar()}
+function carrusel(){const vp=$('viewport');let sx=0,sy=0,on=false;vp.addEventListener('pointerdown',e=>{if(e.target.closest('textarea,button,input,.card'))return;sx=e.clientX;sy=e.clientY;on=true});vp.addEventListener('pointercancel',()=>on=false);vp.addEventListener('pointerup',e=>{if(!on)return;on=false;const dx=e.clientX-sx,dy=e.clientY-sy;if(Math.abs(dx)>55&&Math.abs(dx)>Math.abs(dy))setPage(PAGE+(dx<0?1:-1))})}
+reloj();setInterval(reloj,30000);prepararCarruselCircular();carrusel();actualizarDots();render();
+async function iniciarConexion(){if(!CONNECTION.url||!CONNECTION.key){avisar('Abre Conexión para cargar y guardar tus pendientes.');return}try{await api('check');CONNECTED=true;await cargar()}catch(e){avisar(e.message)}}
+iniciarConexion();document.addEventListener('visibilitychange',()=>{if(!document.hidden)cargar(true)});window.addEventListener('online',()=>cargar(true));
+if(window.matchMedia && window.matchMedia('(display-mode: standalone)').matches){document.documentElement.classList.add('standalone')}
+if(window.navigator.standalone===true){document.documentElement.classList.add('standalone')}
+</script></body></html>
