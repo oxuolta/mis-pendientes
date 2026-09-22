@@ -25,16 +25,15 @@
     @media(min-width:900px){.page{padding-left:32px;padding-right:32px}.title{font-size:48px}.date{font-size:50px}.time{font-size:44px}.capture{min-height:340px;font-size:40px}.save{font-size:44px;min-height:100px}.list{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.txt{font-size:31px}.stamp{font-size:21px}}
     @media(max-width:600px){.page{padding-left:10px;padding-right:10px}.title{font-size:29px}.date{font-size:31px}.time{font-size:28px}.home{gap:16px}.capture{width:90vw;min-height:220px;padding:17px;font-size:23px;border-radius:21px}.save{width:60vw;min-height:68px;font-size:29px;border-radius:19px}.hint{font-size:14px}.inner{padding:15px 17px}.stamp{font-size:14px;gap:22px}.txt{font-size:20px}.card{border-radius:20px}.deleteBg{width:115px;font-size:18px}.card.swiped .inner{transform:translateX(-115px)}.empty{font-size:19px;padding:31px 14px}.sheetText{font-size:21px}.actions button{font-size:18px}}
 
-    .voiceBox{width:min(90vw,720px);text-align:center}.mic{min-height:56px;padding:12px 25px;border-radius:18px;background:#e7f4ff;color:#0867ab;font-size:22px;font-weight:800}.mic[aria-pressed="true"]{background:#fff0f3;color:#b51f43}.voiceStatus,.voicePreview{font-size:16px;line-height:1.4;margin:9px 0 0;color:#53627b}.voicePreview{color:#0867ab;white-space:pre-wrap}.voicePreview:empty{display:none}button:disabled{opacity:.55;cursor:default}button:focus-visible{outline:3px solid #168df2;outline-offset:3px}.connection{position:fixed;top:calc(8px + var(--safeTop));right:10px;z-index:12;padding:9px 13px;border-radius:14px;background:#edf6ff;color:#0867ab;font-size:14px}.appStatus{position:fixed;bottom:calc(29px + var(--safeBottom));left:5%;width:90%;text-align:center;font-size:13px;background:#fffef0;z-index:11;border-radius:8px}.appStatus:empty{display:none}.config label{display:block;font-weight:700;margin:15px 0 6px}.config input{width:100%;font:inherit;padding:12px;border:1px solid #becbdc;border-radius:10px}.config p{line-height:1.5;color:#53627b}.config h2{margin-top:0}.home{padding-top:30px;padding-bottom:35px}.dots .dot{padding:0;border:0}.dots{gap:16px;padding:5px}
+    .voiceBox{width:min(90vw,720px);text-align:center}.voiceActions{display:flex;justify-content:center;align-items:center;gap:10px}.mic{width:58px;height:58px;padding:0;border-radius:50%;background:#e7f4ff;color:#0867ab;font-size:30px;font-weight:800;display:inline-flex;align-items:center;justify-content:center}.mic[aria-pressed="true"]{background:#fff0f3;color:#b51f43}.modifyDraft{min-height:40px;padding:8px 14px;border-radius:13px;background:#f0f3f7;color:#53627b;font-size:14px;font-weight:850}.voiceStatus,.voicePreview{font-size:16px;line-height:1.4;margin:9px 0 0;color:#53627b}.voicePreview{color:#0867ab;white-space:pre-wrap}.voicePreview:empty{display:none}button:disabled{opacity:.55;cursor:default}button:focus-visible{outline:3px solid #168df2;outline-offset:3px}.appStatus{position:fixed;bottom:calc(29px + var(--safeBottom));left:5%;width:90%;text-align:center;font-size:13px;background:#fffef0;z-index:11;border-radius:8px}.appStatus:empty{display:none}.config label{display:block;font-weight:700;margin:15px 0 6px}.config input{width:100%;font:inherit;padding:12px;border:1px solid #becbdc;border-radius:10px}.config p{line-height:1.5;color:#53627b}.config h2{margin-top:0}.home{padding-top:30px;padding-bottom:35px}.dots .dot{padding:0;border:0}.dots{gap:16px;padding:5px}
   </style>
 </head>
 <body>
 <div id="viewport" class="viewport"><div id="track" class="track">
-  <section class="page"><div class="home"><div class="header"><div id="homeDate" class="date"></div><div id="homeTime" class="time"></div></div><textarea id="taskText" class="capture" aria-label="Texto del recordatorio" placeholder="Escribe o dicta tu recordatorio..."></textarea><div class="voiceBox"><button id="micBtn" class="mic" type="button" aria-pressed="false" aria-controls="taskText" onclick="alternarDictado()">🎙 DICTAR</button><p id="voiceStatus" class="voiceStatus" role="status">Toca el micrófono, habla y revisa el texto antes de guardar.</p><p id="voicePreview" class="voicePreview"></p></div><button id="saveBtn" class="save" onclick="guardarRapido()">GUARDAR</button><div class="hint">Desliza para ver pendientes y completados</div></div></section>
+  <section class="page"><div class="home"><div class="header"><div id="homeDate" class="date"></div><div id="homeTime" class="time"></div></div><textarea id="taskText" class="capture" aria-label="Texto del recordatorio" placeholder="Escribe o dicta tu recordatorio..."></textarea><div class="voiceBox"><div class="voiceActions"><button id="micBtn" class="mic" type="button" aria-label="Dictar recordatorio" title="Dictar" aria-pressed="false" aria-controls="taskText" onclick="alternarDictado()">🎙</button><button id="modifyDraftBtn" class="modifyDraft" type="button" onclick="modificarBorrador()">MODIFICAR</button></div><p id="voiceStatus" class="voiceStatus" role="status">Toca el micrófono, habla y revisa el texto antes de guardar.</p><p id="voicePreview" class="voicePreview"></p></div><button id="saveBtn" class="save" onclick="guardarRapido()">GUARDAR</button><div class="hint">Desliza para ver pendientes y completados</div></div></section>
   <section class="page"><div class="header"><div class="title">PENDIENTES</div><div id="pendingDate" class="date"></div><div id="pendingTime" class="time"></div></div><div id="pendingList" class="list"><div class="empty">Cargando...</div></div></section>
   <section class="page"><div class="header"><div class="title">COMPLETADOS</div><div id="doneDate" class="date"></div><div id="doneTime" class="time"></div></div><div id="doneList" class="list"><div class="empty">Cargando...</div></div></section>
 </div></div>
-<button class="connection" onclick="abrirConexion()">Conexión</button>
 <div id="appStatus" class="appStatus" role="status"></div>
 <div class="dots" aria-label="Páginas"><button class="dot active" aria-label="Nuevo recordatorio" onclick="setPage(0)"></button><button class="dot" aria-label="Pendientes" onclick="setPage(1)"></button><button class="dot" aria-label="Completados" onclick="setPage(2)"></button></div>
 <dialog id="configDlg"><form id="configForm" class="sheet config">
@@ -47,7 +46,7 @@
 <script>
 let DATA=[],PAGE=0,POS=1,CURRENT=null,EDITING=null,ANIMATING=false;const COLORS=['#168df2','#ff8a00','#8d4ce8','#21b96b','#ff4f71','#00a9d6','#f1b900'];const track=document.getElementById('track');
 const $=id=>document.getElementById(id);
-const taskText=$('taskText'),saveBtn=$('saveBtn'),micBtn=$('micBtn'),voiceStatus=$('voiceStatus'),voicePreview=$('voicePreview');
+const taskText=$('taskText'),saveBtn=$('saveBtn'),micBtn=$('micBtn'),modifyDraftBtn=$('modifyDraftBtn'),voiceStatus=$('voiceStatus'),voicePreview=$('voicePreview');
 const configDlg=$('configDlg'),taskDlg=$('taskDlg'),sheetText=$('sheetText'),completeBtn=$('completeBtn'),editBtn=$('editBtn'),deleteBtn=$('deleteBtn');
 let CONNECTION={url:'',key:''},CONNECTED=false,SAVING=false,LOADING=false,MUTATING=false,DRAFT_ID='',LOAD_VERSION=0;
 try{CONNECTION.url=localStorage.getItem('PENDIENTES_BACKEND_URL')||'';CONNECTION.key=localStorage.getItem('PENDIENTES_ACCESS_KEY')||''}catch(e){}
@@ -103,7 +102,7 @@ function explicarAccesoRechazado(){
   return 'El navegador o el sistema rechazó el dictado. Comprueba que Windows permita a Chrome usar el micrófono. '+dictadoDelTeclado();
 }
 let recognition=null,VOICE_ACTIVE=false,VOICE_STOPPING=false,VOICE_TIMER=null;
-function controlesVoz(active){VOICE_ACTIVE=active;taskText.readOnly=active||SAVING;saveBtn.disabled=active||SAVING;micBtn.disabled=SAVING;micBtn.setAttribute('aria-pressed',String(active));micBtn.textContent=active?'■ DETENER':(bloqueoDeVoz()?'🎙 DICTADO DEL TECLADO':'🎙 DICTAR')}
+function controlesVoz(active){VOICE_ACTIVE=active;taskText.readOnly=active||SAVING;saveBtn.disabled=active||SAVING;micBtn.disabled=SAVING;modifyDraftBtn.disabled=active||SAVING;micBtn.setAttribute('aria-pressed',String(active));micBtn.textContent=active?'■':'🎙';micBtn.setAttribute('aria-label',active?'Detener dictado':'Dictar recordatorio');micBtn.title=active?'Detener dictado':'Dictar'}
 function alternarDictado(){
   if(SAVING)return;if(VOICE_ACTIVE){detenerDictado();return}
   if(bloqueoDeVoz()){voiceStatus.textContent=explicarBloqueo();taskText.focus();return}
@@ -123,7 +122,7 @@ function alternarDictado(){
   try{r.start()}catch(e){hadError=true;voiceStatus.textContent='No se pudo iniciar el micrófono. Usa el dictado del teclado.';finish()}
 }
 function detenerDictado(){if(!recognition||VOICE_STOPPING)return;VOICE_STOPPING=true;voiceStatus.textContent='Terminando dictado…';micBtn.disabled=true;const r=recognition;try{r.stop()}catch(e){r.onend()}VOICE_TIMER=setTimeout(()=>{if(recognition===r){try{r.abort()}catch(e){}r.onend()}},4000)}
-if(bloqueoDeVoz()){micBtn.textContent='🎙 DICTADO DEL TECLADO';voiceStatus.textContent=explicarBloqueo()}
+if(bloqueoDeVoz()){micBtn.textContent='🎙';micBtn.setAttribute('aria-label','Usar dictado del teclado');micBtn.title='Dictado';voiceStatus.textContent=explicarBloqueo()}
 document.addEventListener('visibilitychange',()=>{if(document.hidden)detenerDictado()});
 window.addEventListener('pagehide',detenerDictado);
 function pad(n){return String(n).padStart(2,'0')}function fmtDate(d){return `${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()}`}function fmtTime(d){let h=d.getHours(),m=pad(d.getMinutes()),ap=h>=12?'p. m.':'a. m.';h=h%12||12;return `${h}:${m} ${ap}`}
@@ -184,7 +183,7 @@ track.addEventListener('transitionend',e=>{
   }
 });
 async function cargar(){
-  if(!CONNECTED){avisar('Abre Conexión para cargar y guardar tus pendientes.');render();return}
+  if(!CONNECTED){avisar('Configura la conexión para cargar y guardar tus pendientes.');render();return}
   if(MUTATING||SAVING)return;LOADING=true;const version=++LOAD_VERSION;avisar('Actualizando…');
   try{const d=await api('list');if(version!==LOAD_VERSION)return;if(!Array.isArray(d.items))throw new Error('La lista recibida no es válida.');DATA=d.items;render();avisar('')}
   catch(e){if(version===LOAD_VERSION)avisar(e.message)}finally{LOADING=false}
@@ -194,6 +193,14 @@ function stamp(x){const s=x.fechaAlta||'';if(!s)return{d:'',t:''};const p=s.spli
 function render(){lista('pendingList',DATA.filter(x=>x.estado!=='Completado'),false);lista('doneList',DATA.filter(x=>x.estado==='Completado'),true)}
 function lista(id,rows,done){const el=$(id);if(!rows.length){el.innerHTML=`<div class="empty">${CONNECTED?(done?'No hay recordatorios completados.':'No tienes recordatorios pendientes.'):'Conecta tu cuenta para ver los recordatorios.'}</div>`;return}rows.sort((a,b)=>String(b.fechaAlta||'').localeCompare(String(a.fechaAlta||'')));el.innerHTML=rows.map((x,i)=>{const s=stamp(x),c=COLORS[i%COLORS.length];return `<div class="card" style="--accent:${c}" data-id="${esc(x.id)}"><button class="deleteBg" data-action="delete">ELIMINAR</button><div class="inner" role="button" tabindex="0" data-action="detail"><div class="stamp"><span class="d">${esc(s.d)}</span><span class="t">${esc(s.t)}</span></div><div class="txt">${esc(x.asunto||'')}</div>${done?'<div class="check">✓</div>':''}</div></div>`}).join('');el.querySelectorAll('[data-action]').forEach(node=>{const run=ev=>{const id=node.closest('.card').dataset.id;node.dataset.action==='delete'?eliminarDesdeTarjeta(ev,id):detalle(id)};node.addEventListener('click',run);if(node.dataset.action==='detail')node.addEventListener('keydown',ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();run(ev)}})});swipeTarjetas(el)}
 function swipeTarjetas(el){el.querySelectorAll('.card').forEach(card=>{let sx=0,dx=0,on=false;card.addEventListener('pointerdown',e=>{sx=e.clientX;dx=0;on=true});card.addEventListener('pointermove',e=>{if(on)dx=e.clientX-sx});card.addEventListener('pointerup',()=>{if(!on)return;on=false;if(dx<-55)card.classList.add('swiped');else if(dx>30)card.classList.remove('swiped')})})}
+function modificarBorrador(){
+  if(SAVING||VOICE_ACTIVE)return;
+  taskText.value='';
+  EDITING=null;DRAFT_ID='';
+  voicePreview.textContent='';
+  voiceStatus.textContent='Mensaje borrado. Escribe o dicta nuevamente.';
+  taskText.focus();
+}
 async function guardarRapido(){
   if(VOICE_ACTIVE||SAVING)return;const txt=taskText.value.trim();if(!txt){taskText.focus();return}if(!CONNECTED){abrirConexion();return}
   if(!DRAFT_ID)DRAFT_ID=EDITING?EDITING.id:(window.crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+'-'+Math.random().toString(36).slice(2));
@@ -212,7 +219,18 @@ async function eliminarActual(){if(!CURRENT)return;if(!confirm('¿Eliminar este 
 async function eliminarDesdeTarjeta(ev,id){ev.stopPropagation();if(MUTATING)return;if(!confirm('¿Eliminar este recordatorio? Se guardará una copia en ELIMINADOS.'))return;if(await cambiar('delete',id))cargar()}
 function carrusel(){const vp=$('viewport');let sx=0,sy=0,on=false;vp.addEventListener('pointerdown',e=>{if(e.target.closest('textarea,button,input,.card'))return;sx=e.clientX;sy=e.clientY;on=true});vp.addEventListener('pointercancel',()=>on=false);vp.addEventListener('pointerup',e=>{if(!on)return;on=false;const dx=e.clientX-sx,dy=e.clientY-sy;if(Math.abs(dx)>55&&Math.abs(dx)>Math.abs(dy))setPage(PAGE+(dx<0?1:-1))})}
 reloj();setInterval(reloj,30000);prepararCarruselCircular();carrusel();actualizarDots();render();
-async function iniciarConexion(){if(!CONNECTION.url||!CONNECTION.key){avisar('Abre Conexión para cargar y guardar tus pendientes.');return}try{await api('check');CONNECTED=true;await cargar()}catch(e){avisar(e.message)}}
+async function iniciarConexion(){if(!CONNECTION.url||!CONNECTION.key){avisar('Configura la conexión para cargar y guardar tus pendientes.');setTimeout(()=>abrirConexion(),250);return}try{await api('check');CONNECTED=true;await cargar()}catch(e){avisar(e.message)}}
+// Acceso oculto de mantenimiento: mantener pulsada la fecha 2 segundos abre la conexión.
+function activarAccesoMantenimiento(){
+  ['homeDate','pendingDate','doneDate'].forEach(id=>{
+    const el=$(id);if(!el)return;let timer=null;
+    const start=()=>{clearTimeout(timer);timer=setTimeout(()=>abrirConexion(),2000)};
+    const cancel=()=>{clearTimeout(timer);timer=null};
+    el.addEventListener('pointerdown',start);
+    ['pointerup','pointercancel','pointerleave'].forEach(ev=>el.addEventListener(ev,cancel));
+  });
+}
+activarAccesoMantenimiento();
 iniciarConexion();document.addEventListener('visibilitychange',()=>{if(!document.hidden)cargar(true)});window.addEventListener('online',()=>cargar(true));
 if(window.matchMedia && window.matchMedia('(display-mode: standalone)').matches){document.documentElement.classList.add('standalone')}
 if(window.navigator.standalone===true){document.documentElement.classList.add('standalone')}
